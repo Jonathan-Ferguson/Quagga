@@ -1361,7 +1361,7 @@ funcname_thread_execute (struct thread_master *m,
 
   memset (&dummy, 0, sizeof (struct thread));
 
-  dummy.type = THREAD_EVENT;
+  dummy.type = THREAD_EXECUTE;
   dummy.add_type = THREAD_EXECUTE;
   dummy.master = NULL;
   dummy.func = func;
