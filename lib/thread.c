@@ -604,7 +604,7 @@ static void
 thread_add_unuse (struct thread *thread)
 {
   assert (thread);
-  /* thread_execute uses dummy threads, allocated on its stack */
+  
   if (thread->master == NULL)
     return;
   
@@ -1357,22 +1357,11 @@ funcname_thread_execute (struct thread_master *m,
                 int val,
 		debugargdef)
 {
-  struct thread dummy; 
+  struct thread *t = thread_get (m, THREAD_EXECUTE, func, arg, debugargpass);
+  t->add_type = THREAD_EXECUTE;
+  t->u.val = val;
 
-  memset (&dummy, 0, sizeof (struct thread));
-
-  dummy.type = THREAD_EXECUTE;
-  dummy.add_type = THREAD_EXECUTE;
-  dummy.master = NULL;
-  dummy.func = func;
-  dummy.arg = arg;
-  dummy.u.val = val;
-
-  dummy.funcname = funcname;
-  dummy.schedfrom = schedfrom;
-  dummy.schedfrom_line = fromln;
-
-  thread_call (&dummy);
+  thread_call (t);
 
   return NULL;
 }
